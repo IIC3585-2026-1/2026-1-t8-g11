@@ -26,7 +26,6 @@ export class WebsocketServerGateway implements ServerGateway {
   }
 
   sendCommand(cmd: Command): void {
-    console.log(cmd);
-    this.socket.send("a");
+    this.socket.send(JSON.stringify(cmd));
   }
 }
