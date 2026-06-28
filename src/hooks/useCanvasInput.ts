@@ -30,6 +30,9 @@ export function useCanvasInput(canvasRef: RefObject<HTMLCanvasElement | null>) {
     const handlePointerUp = (event: PointerEvent) => {
       const endCoord = extractCoord(event);
       console.log(dragging, startCoord, endCoord);
+      if (startCoord && dragging) {
+        service.inputDragEnd(startCoord, endCoord);
+      }
 
       startCoord = null;
       dragging = false;
