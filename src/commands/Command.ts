@@ -1,3 +1,3 @@
 export abstract class Command {
-  abstract apply(): void;
+  abstract apply(canvas: HTMLCanvasElement): void;
 }

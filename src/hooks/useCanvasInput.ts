@@ -8,6 +8,8 @@ export function useCanvasInput(canvasRef: RefObject<HTMLCanvasElement | null>) {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    service.subscribe((cmd) => cmd.apply(canvas));
+
     const extractCoord = (event: PointerEvent) => {
       // TODO: perform transformation to get
       // coordinates in canvas element.
@@ -47,5 +49,5 @@ export function useCanvasInput(canvasRef: RefObject<HTMLCanvasElement | null>) {
       canvas.removeEventListener("pointermove", handlePointerMove);
       canvas.removeEventListener("pointerup", handlePointerUp);
     };
-  }, [canvasRef]);
+  }, [canvasRef, service]);
 }

@@ -1,9 +1,9 @@
 import type { Command } from "../commands/Command";
-import type { ServerGateway } from "./ServerGateway";
+import type { ServerGateway, SubscriberCallback } from "./ServerGateway";
 
 export class WebsocketServerGateway implements ServerGateway {
   private socket: WebSocket;
-  // TODO: private subscribers: (() => void)[] = [];
+  private subscribers: SubscriberCallback[] = [];
 
   constructor(url: string) {
     this.socket = new WebSocket(url);
@@ -21,8 +21,14 @@ export class WebsocketServerGateway implements ServerGateway {
 
     this.socket.addEventListener("message", (event: MessageEvent) => {
       console.info("Message received", event.data);
-      // TODO
+      this.subscribers.forEach((callback) => {
+        callback(event.data);
+      });
     });
+  }
+
+  subscribe(callback: SubscriberCallback): void {
+    this.subscribers.push(callback);
   }
 
   sendCommand(cmd: Command): void {

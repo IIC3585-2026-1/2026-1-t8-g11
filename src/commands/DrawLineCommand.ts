@@ -12,5 +12,15 @@ export class DrawLineCommand extends Command {
     this.endCoord = endCoord;
   }
 
-  override apply(): void {}
+  static fromJSON(data: any) {
+    return new DrawLineCommand(data.startCoord, data.endCoord);
+  }
+
+  override apply(canvas: HTMLCanvasElement): void {
+    const ctx = canvas.getContext("2d")!;
+    console.log(ctx);
+    ctx.moveTo(this.startCoord.x, this.startCoord.y);
+    ctx.lineTo(this.endCoord.x, this.endCoord.y);
+    ctx.stroke();
+  }
 }
