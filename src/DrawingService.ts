@@ -11,6 +11,10 @@ export class DrawingService {
     this.serverGateway = serverGateway;
   }
 
+  getCurrentTool() {
+    return {}; // TODO
+  }
+
   subscribe(handler: CommandHandler) {
     this.serverGateway.subscribe((data) => {
       const cmd = this.parseServerMessage(data);
