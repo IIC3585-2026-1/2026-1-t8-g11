@@ -1,7 +1,7 @@
-import { ColorPicker, HStack, Portal, type Color } from "@chakra-ui/react";
+import { ColorPicker, HStack, Portal } from "@chakra-ui/react";
 
-interface StyleOptions {
-  fillColor: Color;
+export interface StyleOptions {
+  fillColor: any;
   // lineThickness: any;
   // TODO more?
 }
@@ -17,8 +17,9 @@ export function StyleConfiguration({
   const fillColorHandler = (color) => {
     onStyleChange({ ...style, fillColor: color.value });
   };
+
   return (
-    <ColorPicker.Root onValueChangeEnd={fillColorHandler}>
+    <ColorPicker.Root value={style.fillColor} onValueChange={fillColorHandler}>
       <ColorPicker.HiddenInput />
       <ColorPicker.Label>Fill Color</ColorPicker.Label>
       <ColorPicker.Control>

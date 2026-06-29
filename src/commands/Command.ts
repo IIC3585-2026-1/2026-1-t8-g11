@@ -1,3 +1,3 @@
-export abstract class Command {
-  abstract apply(canvas: HTMLCanvasElement): void;
+export interface Command {
+  apply(canvas: HTMLCanvasElement): void;
 }

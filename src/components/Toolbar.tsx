@@ -1,26 +1,42 @@
-import { DrawLineCommand } from "@/commands/DrawLineCommand";
 import { useDrawingService } from "@/hooks/useDrawingService";
 import { HStack, RadioCard } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleConfiguration } from "./StyleConfiguration";
+import { LineTool } from "@/tools/LineTool";
+import { RectangleTool } from "@/tools/RectangleTool";
 
 export function Toolbar() {
   const service = useDrawingService();
-  const [currentTool, setCurrentTool] = useState(service.getCurrentTool());
   const tools = ["Line", "Rectangle"];
+  const [currentTool, setCurrentTool] = useState(tools[0]);
+  const [style, setStyle] = useState(service.getCurrentTool().getStyle());
 
-  const toolSelectHandler = (toolName) => {
-    switch (toolName) {
+  useEffect(() => {
+    service.getCurrentTool().setStyle(style);
+  }, [style]);
+
+  useEffect(() => {
+    let tool;
+    switch (currentTool) {
       case "Line":
+        tool = new LineTool(style);
         break;
       case "Rectangle":
+        tool = new RectangleTool(style);
         break;
+      default:
+        return;
     }
-  };
+
+    service.setCurrentTool(tool);
+  }, [currentTool]);
 
   return (
     <HStack>
-      <RadioCard.Root onValueChange={(e) => console.log(e)}>
+      <RadioCard.Root
+        value={currentTool}
+        onValueChange={(e) => setCurrentTool(e.value)}
+      >
         <RadioCard.Label>Select Tool</RadioCard.Label>
         <HStack>
           {tools.map((tool) => {
@@ -38,7 +54,7 @@ export function Toolbar() {
           })}
         </HStack>
       </RadioCard.Root>
-      <StyleConfiguration onStyleChange={(style) => console.log(style)} />
+      <StyleConfiguration style={style} onStyleChange={setStyle} />
     </HStack>
   );
 }
