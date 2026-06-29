@@ -13,7 +13,9 @@ export function useCanvasInput(canvasRef: RefObject<HTMLCanvasElement | null>) {
     const extractCoord = (event: PointerEvent) => {
       // TODO: perform transformation to get
       // coordinates in canvas element.
-      return new Coord(event.clientX, event.clientY);
+      const x = event.offsetX;
+      const y = event.offsetY;
+      return new Coord(x, y);
     };
 
     let startCoord: Coord | null = null;
