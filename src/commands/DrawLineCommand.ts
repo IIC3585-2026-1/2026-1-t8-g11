@@ -21,8 +21,10 @@ export class DrawLineCommand implements Command {
   apply(canvas: HTMLCanvasElement): void {
     const ctx = canvas.getContext("2d")!;
 
+    ctx.beginPath();
     ctx.moveTo(this.startCoord.x, this.startCoord.y);
     ctx.lineTo(this.endCoord.x, this.endCoord.y);
+    ctx.strokeStyle = this.style.fillColor;
     ctx.stroke();
   }
 }

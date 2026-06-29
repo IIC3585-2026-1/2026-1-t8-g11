@@ -33,7 +33,9 @@ export class DrawRectangleCommand implements Command {
   apply(canvas: HTMLCanvasElement): void {
     const ctx = canvas.getContext("2d")!;
 
+    ctx.beginPath();
     ctx.rect(this.coord.x, this.coord.y, this.width, this.height);
+    ctx.fillStyle = this.style.fillColor;
     ctx.fill();
   }
 }

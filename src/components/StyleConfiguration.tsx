@@ -1,4 +1,5 @@
 import { ColorPicker, HStack, Portal } from "@chakra-ui/react";
+import { parseColor } from "@chakra-ui/react";
 
 export interface StyleOptions {
   fillColor: any;
@@ -15,11 +16,11 @@ export function StyleConfiguration({
   onStyleChange: (style: StyleOptions) => void;
 }) {
   const fillColorHandler = (color) => {
-    onStyleChange({ ...style, fillColor: color.value });
+    onStyleChange({ ...style, fillColor: color.value.toString("rgba") });
   };
 
   return (
-    <ColorPicker.Root value={style.fillColor} onValueChange={fillColorHandler}>
+    <ColorPicker.Root onValueChange={fillColorHandler}>
       <ColorPicker.HiddenInput />
       <ColorPicker.Label>Fill Color</ColorPicker.Label>
       <ColorPicker.Control>
