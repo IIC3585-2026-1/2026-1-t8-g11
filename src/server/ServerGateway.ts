@@ -1,7 +1,7 @@
 import type { Command } from "../commands/Command";
 
-export type SubscriberCallback = (cmd: Command) => void;
+export type SubscriberCallback = (data: string) => void;
 export interface ServerGateway {
-  subscribe(callback: SubscriberCallback): void;
+  subscribe(callback: SubscriberCallback): () => void;
   sendCommand(cmd: Command): void;
 }

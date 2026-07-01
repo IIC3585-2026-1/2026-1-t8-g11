@@ -4,10 +4,14 @@ import { useEffect, useState } from "react";
 import { StyleConfiguration } from "./StyleConfiguration";
 import { LineTool } from "@/tools/LineTool";
 import { RectangleTool } from "@/tools/RectangleTool";
+import { FreeDrawTool } from "@/tools/FreeDrawTool";
+
+const controlHeight = "44px";
+const toolItemWidth = "124px";
 
 export function Toolbar() {
   const service = useDrawingService();
-  const tools = ["Line", "Rectangle"];
+  const tools = ["Line", "Rectangle", "FreeDraw"];
   const [currentTool, setCurrentTool] = useState(tools[0]);
   const [style, setStyle] = useState(service.getCurrentTool().getStyle());
 
@@ -24,6 +28,9 @@ export function Toolbar() {
       case "Rectangle":
         tool = new RectangleTool(style);
         break;
+      case "FreeDraw":
+        tool = new FreeDrawTool(style);
+        break;
       default:
         return;
     }
@@ -32,19 +39,31 @@ export function Toolbar() {
   }, [currentTool]);
 
   return (
-    <HStack>
+    <HStack alignItems="end" gap={4} flexWrap="wrap" justifyContent="center">
       <RadioCard.Root
         value={currentTool}
-        onValueChange={(e) => setCurrentTool(e.value)}
+        onValueChange={(e) => {
+          if (e.value) setCurrentTool(e.value);
+        }}
       >
         <RadioCard.Label>Select Tool</RadioCard.Label>
-        <HStack>
+        <HStack gap={2}>
           {tools.map((tool) => {
             return (
-              <RadioCard.Item key={tool} value={tool}>
+              <RadioCard.Item key={tool} value={tool} w={toolItemWidth}>
                 <RadioCard.ItemHiddenInput />
-                <RadioCard.ItemControl>
-                  <RadioCard.ItemContent>
+                <RadioCard.ItemControl
+                  h={controlHeight}
+                  px={3}
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <RadioCard.ItemContent
+                    alignItems="center"
+                    justifyContent="center"
+                    flexDirection="row"
+                    gap={2}
+                  >
                     <RadioCard.ItemText>{tool}</RadioCard.ItemText>
                     <RadioCard.ItemIndicator />
                   </RadioCard.ItemContent>

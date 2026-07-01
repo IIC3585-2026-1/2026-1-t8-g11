@@ -11,7 +11,7 @@ export class DrawLineCommand implements Command {
   constructor(startCoord: Coord, endCoord: Coord, style: StyleOptions) {
     this.startCoord = startCoord;
     this.endCoord = endCoord;
-    this.style = style;
+    this.style = { ...style };
   }
 
   static fromJSON(data: any) {

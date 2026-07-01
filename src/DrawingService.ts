@@ -1,11 +1,11 @@
-import { parseColor } from "@chakra-ui/react";
 import type { Command } from "./commands/Command";
 import { DrawLineCommand } from "./commands/DrawLineCommand";
+import { DrawRectangleCommand } from "./commands/DrawRectangleCommand";
+import { DrawPixelCommand } from "./commands/DrawPixelCommand";
 import type { Coord } from "./Coord";
 import type { ServerGateway } from "./server/ServerGateway";
 import { LineTool } from "./tools/LineTool";
 import type { Tool } from "./tools/Tool";
-import { DrawRectangleCommand } from "./commands/DrawRectangleCommand";
 
 type CommandHandler = (cmd: Command) => void;
 
@@ -15,7 +15,7 @@ export class DrawingService {
   constructor(serverGateway: ServerGateway) {
     this.serverGateway = serverGateway;
     this.currentTool = new LineTool({
-      fillColor: parseColor("#000000"),
+      fillColor: "#000000",
     });
   }
 
@@ -28,7 +28,7 @@ export class DrawingService {
   }
 
   subscribe(handler: CommandHandler) {
-    this.serverGateway.subscribe((data) => {
+    return this.serverGateway.subscribe((data) => {
       const cmd = this.parseServerMessage(data);
       if (cmd) handler(cmd);
     });
@@ -41,10 +41,32 @@ export class DrawingService {
         return DrawLineCommand.fromJSON(msg);
       case "DrawRectangle":
         return DrawRectangleCommand.fromJSON(msg);
+      case "DrawPixel":
+        return DrawPixelCommand.fromJSON(msg);
       default:
         console.warn("Unknown server message type");
         return;
     }
+  }
+
+  inputPointerDown(coord: Coord) {
+    const cmd = this.currentTool.inputPointerDown(coord);
+    if (cmd) {
+      this.serverGateway.sendCommand(cmd);
+    }
+    return cmd;
+  }
+
+  inputPointerMove(startCoord: Coord, currentCoord: Coord) {
+    const cmd = this.currentTool.inputPointerMove(startCoord, currentCoord);
+    if (cmd) {
+      this.serverGateway.sendCommand(cmd);
+    }
+    return cmd;
+  }
+
+  inputDragPreview(startCoord: Coord, currentCoord: Coord) {
+    return this.currentTool.inputDragPreview(startCoord, currentCoord);
   }
 
   inputDragEnd(startCoord: Coord, endCoord: Coord) {
@@ -52,5 +74,6 @@ export class DrawingService {
     if (cmd) {
       this.serverGateway.sendCommand(cmd);
     }
+    return cmd;
   }
 }

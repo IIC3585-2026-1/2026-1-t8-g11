@@ -16,6 +16,18 @@ export abstract class Tool {
     this.style = style;
   }
 
+  inputPointerDown(_coord: Coord): Command | null {
+    return null;
+  }
+
+  inputPointerMove(_startCoord: Coord, _currentCoord: Coord): Command | null {
+    return null;
+  }
+
+  inputDragPreview(_startCoord: Coord, _currentCoord: Coord): Command | null {
+    return null;
+  }
+
   inputDragEnd(_startCoord: Coord, _endCoord: Coord): Command | null {
     return null;
   }
