@@ -9,7 +9,15 @@ export class RectangleTool extends Tool {
     super(style);
   }
 
+  inputDragPreview(startCoord: Coord, currentCoord: Coord): Command | null {
+    return this.createCommand(startCoord, currentCoord);
+  }
+
   inputDragEnd(startCoord: Coord, endCoord: Coord): Command | null {
+    return this.createCommand(startCoord, endCoord);
+  }
+
+  private createCommand(startCoord: Coord, endCoord: Coord): Command {
     const x = Math.min(startCoord.x, endCoord.x);
     const y = Math.min(startCoord.y, endCoord.y);
     const coord = new Coord(x, y);

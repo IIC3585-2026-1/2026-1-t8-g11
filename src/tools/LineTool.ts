@@ -9,7 +9,15 @@ export class LineTool extends Tool {
     super(style);
   }
 
+  inputDragPreview(startCoord: Coord, currentCoord: Coord): Command | null {
+    return this.createCommand(startCoord, currentCoord);
+  }
+
   inputDragEnd(startCoord: Coord, endCoord: Coord): Command | null {
+    return this.createCommand(startCoord, endCoord);
+  }
+
+  private createCommand(startCoord: Coord, endCoord: Coord): Command {
     return new DrawLineCommand(startCoord, endCoord, this.style);
   }
 }

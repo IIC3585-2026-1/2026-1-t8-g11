@@ -1,11 +1,13 @@
 import { ColorPicker, HStack, Portal } from "@chakra-ui/react";
-import { parseColor } from "@chakra-ui/react";
+import type { ComponentProps } from "react";
 
 export interface StyleOptions {
-  fillColor: any;
+  fillColor: string;
   // lineThickness: any;
   // TODO more?
 }
+
+const controlHeight = "44px";
 
 // TODO make eyedropper work
 export function StyleConfiguration({
@@ -15,7 +17,9 @@ export function StyleConfiguration({
   style: StyleOptions;
   onStyleChange: (style: StyleOptions) => void;
 }) {
-  const fillColorHandler = (color) => {
+  const fillColorHandler: NonNullable<
+    ComponentProps<typeof ColorPicker.Root>["onValueChange"]
+  > = (color) => {
     onStyleChange({ ...style, fillColor: color.value.toString("rgba") });
   };
 
@@ -24,7 +28,7 @@ export function StyleConfiguration({
       <ColorPicker.HiddenInput />
       <ColorPicker.Label>Fill Color</ColorPicker.Label>
       <ColorPicker.Control>
-        <ColorPicker.Trigger px="2">
+        <ColorPicker.Trigger h={controlHeight} px="3">
           <ColorPicker.ValueSwatch boxSize="6" />
           <ColorPicker.ValueText minW="160px" />
         </ColorPicker.Trigger>
